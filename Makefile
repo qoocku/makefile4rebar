@@ -2,6 +2,7 @@
 ### @doc Rebar Makefile Helper & Enhancmenter
 ### @author Damian T. Dobroczy\\'nski <qoocku@gmail.com>
 ### @since 2011-04-10 
+###
 ### ===========================================================================
 
 ## --- macros --
@@ -90,7 +91,7 @@ endif
 
 .PHONY: all get-var del-var edit-var
 
-all: priv/config priv/config/app/appid src/$(app-id).app.src src/vsn $(dbg) compile test doc
+all: src/vsn priv/config/app/appid src/$(app-id).app.src $(dbg) compile test doc
 
 help:
 	@echo Generic Rebar-friendly Makefile ; \
