@@ -26,6 +26,7 @@ module-files      = ${wildcard src/*.erl}
 modules           = ${foreach f,$(module-files),${notdir ${basename $(f)}}}
 effective-modules = ${filter-out ${shell cat priv/config/app/-modules},$(modules)}
 overlay-vars      = ${foreach v,$(app-config), ${notdir $(v)}="${shell cat $(v)}"} modules="${shell cat priv/config/app/modules}"
+fmon-files        = Makefile rebar.config src include test
 
 ifneq ("$(del-var)","")
 	override .DEFAULT_GOAL := del-var
@@ -149,7 +150,7 @@ edit-var: $(warnings)
 	@${call var-edit,$(edit-var)}
 
 sbt:
-	@priv/fmon.sh --command make --args "$(sbt-args)" --files Makefile rebar.config src include test
+	@priv/fmon.sh --command make --args "$(sbt-args)" --files $(fmon-files)
 
 ## --- warning phony targets ---
 
