@@ -27,13 +27,6 @@ while [ "$1" != "" ] ; do
     shift
 done
 
-# specify the test arguments
-if [ "$eunit" != "" ] ; then
-    args="eunit=$eunit"
-fi
-if [ "$ct" != "" ] ; then
-    args="$args ct=$ct"
-fi
 echo "fmon> running $command $args iff some change happens in/to $files"
 
 # get files & directories to watch
@@ -42,8 +35,7 @@ for f in $files ; do
     if [ -f $f -o -d $f ]; then
         to_watch="$to_watch $f"
     else # if there's no such file ask for permission to create it
-        echo "fmon> there's no $f file/directory. create it? [y/n]:"
-        ask y n
+        ask "fmon> there's no $f file/directory. create it? [y/n]:" y n
         if [ "$answer" == "y" ] ; then
             ask "fmon> should it be file or directory? [f/d]:" f d
             if [ "$answer" == "f" ] ; then
@@ -51,6 +43,9 @@ for f in $files ; do
             else
                 mkdir -p $f
             fi
+            to_watch="$to_watch $f"
+        else
+            echo "fmon> so, i'm omitting this entry"
         fi
     fi
 done
