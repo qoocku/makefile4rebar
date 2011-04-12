@@ -111,13 +111,13 @@ compile: src/vsn
 test: src/vsn $(test-types)
 
 eunit:
-	@./rebar eunit $(eunit-suite)
+	@./rebar eunit $(eunit-suite) skip_deps=true
 
 ct:
-	@./rebar ct $(ct-suite)
+	@./rebar ct $(ct-suite) skip_deps=true
 
 doc: src/vsn
-	@./rebar doc
+	@./rebar doc skip_deps=true
 
 dont-know-what-to-set:
 	${error I do not know wht to set. Specify the variable.}
@@ -125,11 +125,11 @@ dont-know-what-to-set:
 set-version: priv/config/app/appid priv/config/app/vsn
 	@rm -f ebin/$(app-id).app ; rm -f src/$(app-id).app.src
 	@if [ "$(app.vsn)" != "" ] ; then \
-		./rebar create template=vsn template_dir=priv/templates force=1 vsn='$(app.vsn)'; \
+		./rebar create skip_deps=true template=vsn template_dir=priv/templates force=1 vsn='$(app.vsn)'; \
 		echo "$(app.vsn)" > priv/config/app/vsn ; \
 	else \
 		if [ -d priv/config/app ] ; then \
-			./rebar create template=vsn template_dir=priv/templates force=1 $(overlay-vars) ; \
+			./rebar create skip_deps=true template=vsn template_dir=priv/templates force=1 $(overlay-vars) ; \
 		else \
 			echo "need 'vsn' parameter or 'priv/config/app/vsn' file with 'vsn' value set."; \
 			exit 1; \
@@ -165,7 +165,7 @@ priv/config/app/appid:
 	$(error "You must create $@ file to do anything by this Makefile")
 
 src/$(app-id).app.src: priv/templates/app.src priv/templates/app.src.template $(app-config-vars)
-	@./rebar create template=app.src template_dir=priv/templates force=1 $(overlay-vars)
+	@./rebar create skip_deps=true template=app.src template_dir=priv/templates force=1 $(overlay-vars)
 
 src/vsn: priv/templates/vsn priv/templates/vsn.template priv/config/app/vsn
 	@make set-version
