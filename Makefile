@@ -92,7 +92,7 @@ endif
 
 .PHONY: all get-var del-var edit-var
 
-all: src/vsn priv/config/app/appid src/$(app-id).app.src $(dbg) compile test doc
+all: priv/config/app/appid src/vsn src/$(app-id).app.src $(dbg) compile test-all doc
 
 help:
 	@echo Generic Rebar-friendly Makefile ; \
@@ -110,6 +110,8 @@ compile: src/vsn
 	@./rebar compile
 
 test: src/vsn $(test-types)
+
+test-all: src/vsn eunit ct
 
 eunit:
 	@./rebar eunit $(eunit-suite) skip_deps=true
